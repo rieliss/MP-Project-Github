@@ -286,7 +286,7 @@ export default async function Home() {
     };
   });
 
-  console.log(Table);
+  // console.log(Table);
 
   return (
     <>
