@@ -151,7 +151,9 @@ export function TableSummary({ SummaryTableAPI }: TableSummaryProps) {
     <>
       <div className="flex m-10 gap-10 flex-col sm:flex-row">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold mb-1">เลือก Section</label>
+          <label className="text-sm font-semibold mb-1">
+            --Select Section Code--
+          </label>
           <Autocomplete
             className="bg-white w-full sm:w-64"
             options={rows}
@@ -176,9 +178,7 @@ export function TableSummary({ SummaryTableAPI }: TableSummaryProps) {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold mb-1">
-            เลือกวัน/เดือน/ปี
-          </label>
+          <label className="text-sm font-semibold mb-1">--Select Date--</label>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               className="bg-white w-full sm:w-64"
@@ -186,21 +186,21 @@ export function TableSummary({ SummaryTableAPI }: TableSummaryProps) {
               onChange={(newDate: any) => setSelectedDate(newDate)}
               maxDate={today}
               views={["year", "month", "day"]}
-              label="date"
+              label="Date"
               format="DD/MM/YYYY"
             />
           </LocalizationProvider>
         </div>
       </div>
 
-      <TableContainer className="w-full">
+      <TableContainer className="w-auto pl-5 pr-5">
         <Table>
           {/* Table Header */}
-          <TableHead className="bg-[#ECE9FD]">
+          <TableHead className="bg-purple-50 text-white shadow-sm">
             <TableRow>
               <TableCell
                 align="center"
-                className="font-bold whitespace-nowrap"
+                className="font-bold whitespace-nowrap text-lg"
                 colSpan={2}
                 style={{
                   background:
@@ -211,33 +211,33 @@ export function TableSummary({ SummaryTableAPI }: TableSummaryProps) {
               </TableCell>
               <TableCell
                 align="center"
-                className="font-bold whitespace-nowrap border-none"
+                className="font-bold whitespace-nowrap border-none text-lg"
                 colSpan={5}
                 style={{
                   background:
-                    "linear-gradient(135deg, #c9ebff 0%, #6BBEFF 100%)",
+                    "linear-gradient(135deg, #cffafe 0%,#a5f3fc 50%, #22d3ee 100%)",
                 }}
               >
                 Day
               </TableCell>
               <TableCell
                 align="center"
-                className="font-bold whitespace-nowrap text-gray-100"
+                className="font-bold whitespace-nowrap text-lg"
                 colSpan={5}
                 style={{
                   background:
-                    "linear-gradient(135deg, #7475b6 0%, #3D3D63 100%)",
+                    "linear-gradient(135deg, #e0e7ff 0%, #c4b5fd 50%,#3730a3 100%)",
                 }}
               >
                 Night
               </TableCell>
               <TableCell
                 align="center"
-                className="font-bold whitespace-nowrap "
+                className="font-bold whitespace-nowrap text-lg"
                 colSpan={5}
                 style={{
                   background:
-                    "linear-gradient(135deg, #A7F3D0 0%, #68D391 100%)",
+                    "linear-gradient(135deg, #fefce8 0%,#fef08a 50%, #eab308 100%)",
                 }}
               >
                 Total
@@ -288,7 +288,7 @@ export function TableSummary({ SummaryTableAPI }: TableSummaryProps) {
                 sx={{ fontSize: 12, padding: "8px" }}
                 className="font-bold whitespace-nowrap"
               >
-                Work%
+                %Work
               </TableCell>
               <TableCell
                 align="center"
@@ -323,7 +323,7 @@ export function TableSummary({ SummaryTableAPI }: TableSummaryProps) {
                 sx={{ fontSize: 12, padding: "8px" }}
                 className="font-bold whitespace-nowrap"
               >
-                Work%
+                %Work
               </TableCell>
               <TableCell
                 align="center"
@@ -358,7 +358,7 @@ export function TableSummary({ SummaryTableAPI }: TableSummaryProps) {
                 sx={{ fontSize: 12, padding: "8px" }}
                 className="font-bold whitespace-nowrap"
               >
-                Work%
+                %Work
               </TableCell>
               <TableCell
                 align="center"
@@ -418,7 +418,7 @@ export function TableSummary({ SummaryTableAPI }: TableSummaryProps) {
                         <div>
                           <Button
                             {...bindTrigger(popupState)}
-                            className="bg-[#ECE9FD] text-slate-700 hover:bg-[#d2cbf7] lowercase"
+                            className="bg-cyan-200 text-slate-700 hover:bg-cyan-300 lowercase"
                             size="small"
                           >
                             details
@@ -552,7 +552,7 @@ export function TableSummary({ SummaryTableAPI }: TableSummaryProps) {
                         <div>
                           <Button
                             {...bindTrigger(popupState)}
-                            className="bg-[#ECE9FD] text-slate-700 hover:bg-[#d2cbf7] lowercase"
+                            className="bg-amber-200 text-slate-700 hover:bg-amber-300 lowercase"
                             size="small"
                           >
                             details

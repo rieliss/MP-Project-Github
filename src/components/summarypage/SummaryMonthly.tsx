@@ -11,6 +11,7 @@ import { Bar } from "react-chartjs-2";
 import React, { useMemo, useEffect } from "react";
 import { useStoreAPI } from "../../../stores/store";
 import dayjs from "dayjs";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -90,18 +91,22 @@ export default function SummaryMonthlyChart({
     });
   }, [day, daysInMonth]);
 
+  const currentDate = dayjs().date(1).format("MMMM-YYYY");
+
   const data = {
     labels: getLabelMonthly,
     datasets: [
       {
         label: "จำนวนพนักงานที่มา",
         data: filteredDailyData.map((entry) => entry.workPlan),
-        backgroundColor: "#3DD0AE",
+        backgroundColor: "#14b8a6",
+        borderRadius: 2,
       },
       {
         label: "จำนวนพนักงานที่ไม่มา",
         data: filteredDailyData.map((entry) => entry.absent),
-        backgroundColor: "#FF2121",
+        backgroundColor: "#e11d48",
+        borderRadius: 2,
       },
     ],
   };
@@ -111,6 +116,29 @@ export default function SummaryMonthlyChart({
       legend: {
         display: false,
       },
+      datalabels: {
+        color: "rgb(56, 56, 56)",
+        width: "10px",
+        height: "10px",
+        borderRadius: 2,
+        backgroundColor: "rgba(255,255, 255,0.7)",
+        align: "-90",
+        font: {
+          size: 14,
+          weight: "bold",
+        },
+        formatter: function (value: any) {
+          if (value > 0) {
+            value = value.toString();
+            value = value.split(/(?=(?:...)*$)/);
+            value = value.join(",");
+            return value;
+          } else {
+            value = "";
+            return value;
+          }
+        },
+      },
     },
     scales: {
       x: {
@@ -119,20 +147,26 @@ export default function SummaryMonthlyChart({
           display: false,
         },
         ticks: {
-          callback: (index: any) => {
-            if (
-              index === 0 ||
-              index === Math.floor(getLabelMonthly.length / 2) ||
-              index === getLabelMonthly.length - 1
-            ) {
-              const currentDate = dayjs()
-                .date(index + 1)
-                .format("DD/MM/YYYY");
+          // callback: (index: any) => {
+          //   if (
+          //     index === 0 ||
+          //     index === Math.floor(getLabelMonthly.length / 2) ||
+          //     index === getLabelMonthly.length - 1
+          //   ) {
+          //     const currentDate = dayjs()
+          //       .date(index + 1)
+          //       .format("DD/MM/YYYY");
 
-              return currentDate;
-            } else {
-              return null;
-            }
+          //     return currentDate;
+          //   } else {
+          //     return null;
+          //   }
+          // },
+          callback: (index: any) => {
+            const currentDate = dayjs()
+              .date(index + 1)
+              .format("DD");
+            return currentDate;
           },
         },
       },
@@ -149,10 +183,22 @@ export default function SummaryMonthlyChart({
 
   return (
     <div className="col-span-1 p-5 bg-white rounded-2xl flex-1 drop-shadow-lg md:col-span-5">
-      <h2 className="text-center text-2xl font-bold my-4">
-        รายงานสรุปการมาทำงานประจำเดือน
-      </h2>
-      <Bar data={data} options={options} />
+      <div className="flex flex-row gap-x-1 mb-2 w-70">
+        <div className="flex grow">
+          {" "}
+          <h2 className="font-bold balance text-xl text-black">
+            Daily Manpower Attendace Summary
+          </h2>
+        </div>
+        <div className="flex  rounded-md ring-1 justify-end pr-4 w-70 p-2 items-center ">
+          <p className="font-bold balance text-2xl text-black">Month : </p>
+          <p className="font-bold balance text-2xl text-cyan-500 underline ml-1">
+            {" "}
+            {currentDate}{" "}
+          </p>
+        </div>
+      </div>
+      <Bar data={data} options={options} plugins={[ChartDataLabels]} />
     </div>
   );
 }

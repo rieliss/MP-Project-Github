@@ -4,13 +4,19 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
+  Title,
   Tooltip,
   Legend,
 } from "chart.js";
-
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
 import React, { useMemo, useEffect } from "react";
 // import { useStoreAPI } from "../../../stores/store";
+import localFont from "next/font/local";
+
+const myFont = localFont({
+  src: "../../../public/fonts/DENSOSans-Regular.ttf",
+});
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -58,18 +64,21 @@ export default function DepartmentGroupChart({
   }, [DepartmentGroupAPI]);
 
   const data = {
-    labels: ["Mfg.", "Parts Mfg.", "Q.A.", "Logistic"],
+    labels: ["Assy Mfg.", "Parts Mfg.", "QA.", "Logistics"],
     labelFullname: departmentGroupNames,
+    borderRadius: 5,
     datasets: [
       {
         label: "จำนวนพนักงานที่มา",
         data: departmentGroupEmployeeWork,
-        backgroundColor: "#3DD0AE",
+        backgroundColor: "#14b8a6",
+        borderRadius: 5,
       },
       {
         label: "จำนวนพนักงานที่ไม่มา",
         data: departmentGroupEmployeeAbsent,
-        backgroundColor: "#FF2121",
+        backgroundColor: "#e11d48",
+        borderRadius: 5,
       },
     ],
   };
@@ -82,6 +91,7 @@ export default function DepartmentGroupChart({
           display: false,
         },
       },
+
       y: {
         stacked: true,
         grid: {
@@ -92,6 +102,29 @@ export default function DepartmentGroupChart({
     plugins: {
       legend: {
         display: false,
+      },
+      datalabels: {
+        color: "rgb(56, 56, 56)",
+        width: "100px",
+        backgoundHeight: "100px",
+        // align: "top",
+        backgroundColor: "rgba(255,255, 255,0.7)",
+        borderRadius: 2,
+        font: {
+          size: 16,
+          weight: "bold",
+        },
+        formatter: function (value: any) {
+          if (value > 0) {
+            value = value.toString();
+            value = value.split(/(?=(?:...)*$)/);
+            value = value.join(",");
+            return value;
+          } else {
+            value = "";
+            return value;
+          }
+        },
       },
       tooltip: {
         callbacks: {
@@ -120,16 +153,30 @@ export default function DepartmentGroupChart({
   }, []);
   return (
     <section className="grid-box col-span-3 lg:col-span-2">
-      <div className="flex flex-col gap-y-2 mb-2">
-        <span className="font-semibold">จำนวนพนักงานที่มาทำงานในวันนี้</span>
-        <span className="font-semibold text-4xl text-active">
-          {employeeWorkCount}{" "}
-          <span className="font-semibold text-primary text-base">คน</span>
-        </span>
+      <div>
+        <p className="font-bold balance text-xl text-black">
+          Dept. Group Manpower Attendacne Summary
+        </p>
+      </div>
+      <div className="flex flex-row gap-x-1 mb-2 w-70">
+        <div className="flex grow rounded-md justify-end pr-4 items-center ">
+          <span className="font-normal">Today's MP Working Attendance : </span>
+        </div>
+        <div className="flex  rounded-md ring-1 ring-teal-500 items-center  justify-center px-6 py-6 pt-0 pb-0">
+          <span className="font-semibold text-4xl text-active">
+            {employeeWorkCount.toLocaleString()}{" "}
+            <span className="font-normal text-primary text-base">MP</span>
+          </span>
+        </div>
       </div>
       <div className="flex justify-center items-center">
         <div style={{ width: "100%", height: "300px" }}>
-          <Bar data={data} options={options} style={{ width: "100%" }} />
+          <Bar
+            data={data}
+            plugins={[ChartDataLabels]}
+            options={options}
+            style={{ width: "100%" }}
+          />
         </div>
       </div>
     </section>

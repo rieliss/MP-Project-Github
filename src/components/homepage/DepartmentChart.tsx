@@ -4,11 +4,22 @@ import {
   BarElement,
   CategoryScale,
   LinearScale,
+  Title,
   Tooltip,
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import React, { useMemo } from "react";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 type DepartmentProps = {
   DepartmentAPI: Departments[];
@@ -66,12 +77,14 @@ export default function DepartmentChart({ DepartmentAPI }: DepartmentProps) {
       {
         label: "จำนวนพนักงานที่มา",
         data: departmentEmployeeWork,
-        backgroundColor: "#3DD0AE",
+        backgroundColor: "#14b8a6",
+        borderRadius: 5,
       },
       {
         label: "จำนวนพนักงานที่ไม่มา",
         data: departmentEmployeeAbsent,
-        backgroundColor: "#FF2121",
+        backgroundColor: "#e11d48",
+        borderRadius: 5,
       },
     ],
   };
@@ -80,6 +93,28 @@ export default function DepartmentChart({ DepartmentAPI }: DepartmentProps) {
     plugins: {
       legend: {
         display: false,
+      },
+      datalabels: {
+        color: "rgb(56, 56, 56)",
+        width: "10px",
+        height: "10px",
+        borderRadius: 2,
+        backgroundColor: "rgba(255,255, 255,0.7)",
+        font: {
+          size: 14,
+          weight: "bold",
+        },
+        formatter: function (value: any) {
+          if (value > 0) {
+            value = value.toString();
+            value = value.split(/(?=(?:...)*$)/);
+            value = value.join(",");
+            return value;
+          } else {
+            value = "";
+            return value;
+          }
+        },
       },
       tooltip: {
         callbacks: {
@@ -123,16 +158,31 @@ export default function DepartmentChart({ DepartmentAPI }: DepartmentProps) {
 
   return (
     <section className="grid-box col-span-3 lg:col-span-2">
-      <div className="flex flex-col gap-y-2 mb-2">
-        <span className="font-semibold">จำนวนพนักงานที่มาทำงานในวันนี้</span>
-        <span className="font-semibold text-4xl text-active">
-          {totalEmployeeWorkCount}{" "}
-          <span className="font-semibold text-primary text-base">คน</span>
-        </span>
+      <div>
+        <p className="font-bold balance text-xl text-black">
+          Department Manpower Attendacne Summary
+        </p>
       </div>
+      <div className="flex flex-row gap-x-1 mb-2 w-70">
+        <div className="flex grow rounded-md justify-end pr-4 items-center ">
+          <span className="font-normal">Today's MP Working Attendance : </span>
+        </div>
+        <div className="flex  rounded-md ring-1 ring-teal-500 items-center  justify-center px-6 py-6 pt-0 pb-0">
+          <span className="font-semibold text-4xl text-active">
+            {totalEmployeeWorkCount.toLocaleString()}{" "}
+            <span className="font-normal text-primary text-base">MP</span>
+          </span>
+        </div>
+      </div>
+
       <div className="flex justify-center items-center">
         <div style={{ width: "100%", height: "300px" }}>
-          <Bar data={data} options={options} style={{ width: "100%" }} />
+          <Bar
+            data={data}
+            options={options}
+            plugins={[ChartDataLabels]}
+            style={{ width: "100%" }}
+          />
         </div>
       </div>
     </section>

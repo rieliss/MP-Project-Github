@@ -11,6 +11,7 @@ import { Bar } from "react-chartjs-2";
 import React, { useMemo } from "react";
 import dayjs from "dayjs";
 import { useStoreAPI } from "../../../stores/store";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -91,7 +92,8 @@ export default function SummaryShiftChart({
           filteredDailyData[day - 1]?.workplanDay || 0,
           filteredDailyData[day - 1]?.workplanNight || 0,
         ],
-        backgroundColor: "#3DD0AE",
+        backgroundColor: "#14b8a6",
+        borderRadius: 5,
       },
       {
         label: "จำนวนพนักงานที่ไม่มา",
@@ -99,7 +101,8 @@ export default function SummaryShiftChart({
           filteredDailyData[day - 1]?.absentDay || 0,
           filteredDailyData[day - 1]?.absentNight || 0,
         ],
-        backgroundColor: "#FF2121",
+        backgroundColor: "#e11d48",
+        borderRadius: 5,
       },
     ],
   };
@@ -108,6 +111,28 @@ export default function SummaryShiftChart({
     plugins: {
       legend: {
         display: false,
+      },
+      datalabels: {
+        color: "rgb(56, 56, 56)",
+        width: "10px",
+        height: "10px",
+        borderRadius: 2,
+        backgroundColor: "rgba(255,255, 255,0.7)",
+        font: {
+          size: 16,
+          weight: "bold",
+        },
+        formatter: function (value: any) {
+          if (value > 0) {
+            value = value.toString();
+            value = value.split(/(?=(?:...)*$)/);
+            value = value.join(",");
+            return value;
+          } else {
+            value = "";
+            return value;
+          }
+        },
       },
     },
     scales: {
@@ -130,8 +155,27 @@ export default function SummaryShiftChart({
 
   return (
     <div className="col-span-1 p-5 bg-white rounded-2xl flex-1 drop-shadow-lg md:col-span-2">
-      <h2 className="text-center text-2xl font-bold my-4">{datepickerAPI}</h2>
-      <Bar data={data} options={options} height={421} />
+      <div className="flex flex-row gap-x-1 mb-2 w-70">
+        <div className="flex grow">
+          {" "}
+          <h2 className="font-bold balance text-xl text-black">
+            Today's Attendance!
+          </h2>
+        </div>
+        <div className="flex  rounded-md ring-1 justify-end pr-4 w-50 p-2 items-center ">
+          <p className="font-bold balance text-xl text-black">Date : </p>
+          <p className="font-bold balance text-xl text-cyan-500 underline ml-1">
+            {" "}
+            {datepickerAPI}{" "}
+          </p>
+        </div>
+      </div>
+      <Bar
+        data={data}
+        options={options}
+        plugins={[ChartDataLabels]}
+        height={421}
+      />
     </div>
   );
 }

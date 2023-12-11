@@ -37,7 +37,7 @@ const SummaryPage = ({ SectionData }: SummaryProps) => {
       <Navigation />
       <Title>Daily Summary Report</Title>
       <main>
-        <section className="grid grid-cols-1 mx-5 gap-5 md:grid-cols-7">
+        <section className="grid grid-cols-1 mx-3 gap-5 md:grid-cols-7">
           <SummaryMonthlyChart MonthlyChartAPI={SectionData} />
           <SummaryShiftChart MonthlyChartAPI={SectionData} />
         </section>

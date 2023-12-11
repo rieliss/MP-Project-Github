@@ -258,8 +258,10 @@ export default async function Home() {
             where: {
               status_Id: 2,
               created_Date: {
-                gte: new Date(),
-                lte: tomorrowStart.toDate(),
+                gte: startTime.toDate(),
+                lte: endTime.toDate(),
+                // gte: new Date(),
+                // lte: tomorrowStart.toDate(),
               },
             },
           },

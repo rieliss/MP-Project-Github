@@ -99,8 +99,8 @@ export default function Dailypage({ sectionData }: DailyProps) {
       await updateAttendance(data);
       Swal.fire({
         icon: "success",
-        title: "ยอดเยี่ยม!",
-        text: "ฟอร์ม Section ของคุณถูกยืนยันเรียบร้อย!",
+        title: "บันทึกเรียบร้อย!",
+        // text: "ข้อมูลของคุณถูกบันทึกเรียบร้อย!",
         allowOutsideClick: false,
       }).then(() => {
         window.location.reload();
@@ -124,8 +124,8 @@ export default function Dailypage({ sectionData }: DailyProps) {
       await modifyAttendance(data);
       Swal.fire({
         icon: "warning",
-        title: "คุณได้ทำการกดแก้ไขฟอร์ม",
-        text: "อย่าลืม! กรุณากรอกฟอร์ม Section ของคุณอีกครั้ง!",
+        title: "คุณได้ทำการกดแก้ไขข้อมูล",
+        text: "อย่าลืม! กรอกข้อมูลในฟอร์มของคุณใหม่อีกครั้ง!",
         allowOutsideClick: false,
       }).then(() => {
         window.location.reload();
@@ -152,7 +152,7 @@ export default function Dailypage({ sectionData }: DailyProps) {
           <ul className="grid grid-cols-1 w-full gap-x-10 gap-y-5 md:grid-cols-2">
             <li className="col-span-1 flex flex-col gap-y-2">
               <label className="text-sm font-semibold mb-1">
-                เลือก Section
+                เลือก Section Code
               </label>
               <Autocomplete
                 className="bg-white"

@@ -32,10 +32,10 @@ function TableCells(
 ): TableCellProps {
   const status =
     employeeWork === 0 && employeeCount === 0
-      ? "• Unavailable"
+      ? "Unavailable"
       : employeeWork >= employeeCount
-      ? "• Complete"
-      : "• Pending..";
+      ? "Completed"
+      : "Pending..";
   const recommend = employeeWork >= employeeCount ? "-" : "ต้องการคนเพิ่ม..";
   const manpowerRatio = `${employeeWork}/${employeeCount}`;
   return {
@@ -148,28 +148,35 @@ export default function OverallTable({ OverallTableAPI }: OverallTableProps) {
           />
         </div>
 
-        <TableContainer className="w-full">
+        <TableContainer className="w-auto pl-5 pr-5">
           <Table>
-            <TableHead className="bg-[#ECE9FD]">
+            <TableHead className="bg-gray-500 text-white rounded-10 h-1">
+              {/* <TableHead className="bg-[#ECE9FD]"> */}
               <TableRow>
                 <TableCell align="center" colSpan={3}>
-                  <span className="font-bold whitespace-nowrap">
+                  <span className="font-bold whitespace-nowrap text-white text-[12pt]">
                     Section Code
                   </span>
                 </TableCell>
                 <TableCell align="center" colSpan={2} style={{ width: "20%" }}>
-                  <span className="font-bold whitespace-nowrap">
+                  <span className="font-bold whitespace-nowrap text-white text-[12pt]">
                     Section Name
                   </span>
                 </TableCell>
                 <TableCell align="center" colSpan={1}>
-                  <span className="font-bold whitespace-nowrap">Mp Count</span>
+                  <span className="font-bold whitespace-nowrap text-white text-[12pt]">
+                    MP Count
+                  </span>
                 </TableCell>
                 <TableCell align="center" colSpan={1}>
-                  <span className="font-bold whitespace-nowrap">Status</span>
+                  <span className="font-bold whitespace-nowrap text-white text-[12pt]">
+                    Status
+                  </span>
                 </TableCell>
                 <TableCell align="center" colSpan={1}>
-                  <span className="font-bold whitespace-nowrap">Recommend</span>
+                  <span className="font-bold whitespace-nowrap text-white text-[12pt]">
+                    Recommend
+                  </span>
                 </TableCell>
               </TableRow>
             </TableHead>

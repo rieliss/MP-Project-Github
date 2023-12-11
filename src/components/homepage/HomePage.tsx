@@ -6,6 +6,8 @@ import DepartmentChart from "./DepartmentChart";
 import MonthlyBarChart from "./MonthlyBarChart";
 import YearlyLineChart from "./YearlyLineChart";
 import { Navigation } from "@/components/Navigation";
+// import { Doughnut } from "react-chartjs-2";
+import DoughnutChart from "./DoughnutChart";
 type HomeProps = {
   OverallTableData: Table[];
   DepartmentGroupData: DepartmentGroup[];
@@ -57,15 +59,15 @@ export function Homepage({
   return (
     <>
       <Navigation />
-      <Title>Overall Dashboard</Title>
-      <main className="grid-container grid grid-cols-1 md:grid-cols-6 gap-4 max-w-screen-xl">
-        <PieChart DepartmentGroupAPI={DepartmentGroupData} />
+      <Title>Overall Manpower Summary</Title>
+      <main className="px-2 grid-container grid grid-cols-1 md:grid-cols-6 gap-2 gap-y-4 max-w-screen-3xl">
+        {/* <PieChart DepartmentGroupAPI={DepartmentGroupData} /> */}
+        <DoughnutChart DepartmentGroupAPI={DepartmentGroupData} />
         <DepartmentGroupChart DepartmentGroupAPI={DepartmentGroupData} />
         <DepartmentChart DepartmentAPI={DepartmentData} />
         <MonthlyBarChart MonthlyAPI={MonthlyYearlyData} />
         <YearlyLineChart YearlyAPI={MonthlyYearlyData} />
       </main>
-
       <OverallTable OverallTableAPI={OverallTableData} />
     </>
   );

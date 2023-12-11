@@ -10,6 +10,7 @@ import {
 import dayjs from "dayjs";
 import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
 
@@ -86,10 +87,16 @@ export default function YearlyLineChart({ YearlyAPI }: YearlyLineChartProps) {
     labelFullname: monthYearArray,
     datasets: [
       {
-        label: "จำนวนของพนักงานที่เข้าทำงานเฉลี่ยต่อเดือน",
+        label: "Avg. MP Working per Month",
         data: summedWorkDaily,
-        backgroundColor: "#3DD0AE",
-        borderColor: "#40e0d0",
+        fill: {
+          target: "origin",
+          above: "#14b8a6", // Area will be red above the origin
+          below: "rgba(75,192,192,0.2)", // And blue below the origin
+        },
+
+        backgroundColor: "rgba(75,192,192,0.2)",
+        borderColor: "#14b8a6",
         tension: 0.2,
       },
     ],
@@ -99,6 +106,28 @@ export default function YearlyLineChart({ YearlyAPI }: YearlyLineChartProps) {
     plugins: {
       legend: {
         display: false,
+      },
+      datalabels: {
+        color: "rgb(56, 56, 56)",
+        width: "10px",
+        height: "10px",
+        borderRadius: 2,
+        align: "top",
+        font: {
+          size: 16,
+          weight: "bold",
+        },
+        formatter: function (value: any) {
+          if (value > 0) {
+            value = value.toString();
+            value = value.split(/(?=(?:...)*$)/);
+            value = value.join(",");
+            return value;
+          } else {
+            value = "";
+            return value;
+          }
+        },
       },
       tooltip: {
         callbacks: {
@@ -131,19 +160,38 @@ export default function YearlyLineChart({ YearlyAPI }: YearlyLineChartProps) {
         min: 0,
       },
     },
-    elements: {
-      line: {
-        fill: true,
-        backgroundColor: "rgba(52, 211, 153, 0.2)", // Add the background color here
-      },
-    },
+    // elements: {
+    //   line: {
+    //     fill: {
+    //       target: "origin",
+    //       above: "rgb(255, 0, 0)", // Area will be red above the origin
+    //       below: "rgb(0, 0, 255)", // And blue below the origin
+    //     },
+    //   },
+    // },
     maintainAspectRatio: false,
     responsive: true,
   };
 
   return (
     <section className="grid-box col-span-3">
-      <div className="flex flex-col gap-y-2 mb-2">
+      <div>
+        <p className="font-bold balance text-xl text-black">
+          Monthly Working Trend
+        </p>
+      </div>
+      <div className="flex flex-row gap-x-1 mb-2 w-70">
+        <div className="flex grow rounded-md justify-end pr-4 items-center ">
+          <span className="font-normal">Avg. MP Working Attendance : </span>
+        </div>
+        <div className="flex  rounded-md ring-1 ring-teal-500 items-center  justify-center px-6 py-6 pt-0 pb-0">
+          <span className="font-semibold text-4xl text-active">
+            {averageWorkCount.toLocaleString()}{" "}
+            <span className="font-normal text-primary text-base">MP</span>
+          </span>
+        </div>
+      </div>
+      {/* <div className="flex flex-col gap-y-2 mb-2">
         <span className="font-semibold">จำนวนพนักงานเข้างานเฉลี่ย</span>
         <span className="font-semibold text-4xl text-active">
           {averageWorkCount}{" "}
@@ -151,10 +199,10 @@ export default function YearlyLineChart({ YearlyAPI }: YearlyLineChartProps) {
             คนต่อเดือน
           </span>
         </span>
-      </div>
+      </div> */}
       <div className="flex justify-center items-center mb-2">
         <div style={{ width: "100%", height: "300px" }}>
-          <Line data={data} options={options} />
+          <Line data={data} options={options} plugins={[ChartDataLabels]} />
         </div>
       </div>
     </section>
