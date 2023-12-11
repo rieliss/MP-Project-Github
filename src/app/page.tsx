@@ -260,11 +260,8 @@ export default async function Home() {
               created_Date: {
                 gte: startTime.toDate(),
                 lte: endTime.toDate(),
-<<<<<<< HEAD
                 // gte: new Date(),
                 // lte: tomorrowStart.toDate(),
-=======
->>>>>>> f269bc24c5c0b64145bf6c839248a66aa6173aef
               },
             },
           },
