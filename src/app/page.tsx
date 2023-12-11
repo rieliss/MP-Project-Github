@@ -260,8 +260,11 @@ export default async function Home() {
               created_Date: {
                 gte: startTime.toDate(),
                 lte: endTime.toDate(),
+<<<<<<< HEAD
                 // gte: new Date(),
                 // lte: tomorrowStart.toDate(),
+=======
+>>>>>>> f269bc24c5c0b64145bf6c839248a66aa6173aef
               },
             },
           },
@@ -273,7 +276,7 @@ export default async function Home() {
   // นับจำนวนพนักงานที่มาทำงานในแต่ละ section
   const Table = sectionWithEmployeeWork.map((section) => {
     const employeeWorkCount = section.employee.reduce((count, employee) => {
-      count += employee.attendance.length; // Counting attendances with status 2 for each employee
+      count += employee.attendance.length;
       return count;
     }, 0);
 
@@ -285,6 +288,8 @@ export default async function Home() {
       employeeSumCount: section.employee.length,
     };
   });
+
+  console.log(Table);
 
   return (
     <>
